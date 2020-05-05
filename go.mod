@@ -15,6 +15,7 @@ require (
 	github.com/go-redis/redis v6.15.7+incompatible
 	github.com/go-redsync/redsync v1.3.1
 	github.com/go-sql-driver/mysql v1.5.0 // indirect
+	github.com/golang/protobuf v1.4.0
 	github.com/gomodule/redigo v2.0.0+incompatible
 	github.com/jehiah/go-strftime v0.0.0-20171201141054-1d33003b3869 // indirect
 	github.com/jinzhu/gorm v1.9.12
@@ -35,7 +36,9 @@ require (
 	github.com/tietang/props v2.2.0+incompatible
 	github.com/valyala/fasttemplate v1.1.0 // indirect
 	github.com/x-cray/logrus-prefixed-formatter v0.5.2
-	golang.org/x/net v0.0.0-20190603091049-60506f45cf65 // indirect
+	golang.org/x/net v0.0.0-20190603091049-60506f45cf65
+	google.golang.org/grpc v1.29.0
+	google.golang.org/protobuf v1.21.0
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/go-playground/validator.v9 v9.31.0
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df

@@ -2,39 +2,41 @@ package base
 
 import (
 	log "github.com/sirupsen/logrus"
+	"google.golang.org/grpc"
 	"net"
-	"net/rpc"
 	"one/infra"
+	"one/models"
+	"one/proto"
 	"reflect"
 	"sync"
 )
 
-var rpcServer *rpc.Server
+var rpcServer *grpc.Server
 var once sync.Once
 
-func RpcServer() *rpc.Server {
-	once.Do(func() {
-		rpcServer = rpc.NewServer()
-	})
+func RpcServer() *grpc.Server {
 	return rpcServer
 }
 func RpcRegister(ri interface{}) {
 	typ := reflect.TypeOf(ri)
-	log.Infof("goRPC Register: %s", typ.String())
-	RpcServer().Register(ri)
+	log.Infof("RPC Register: %s", typ.String())
+	//RpcServer().Register(ri)
+	protos.RegisterIOrderServiceServer(RpcServer(), models.NewOrderService())
 }
 
 type GoRPCStarter struct {
 	infra.BaseStarter
-	server *rpc.Server
+	server *grpc.Server
 }
 
 func (s *GoRPCStarter) Init(ctx infra.StarterContext) {
-	s.server = rpc.NewServer()
+	once.Do(func() {
+		s.server = grpc.NewServer()
+	})
 	rpcServer = s.server
 }
-func (s *GoRPCStarter) Start(ctx infra.StarterContext) {
 
+func (s *GoRPCStarter) Start(ctx infra.StarterContext) {
 	port := ctx.Props().GetDefault("app.rpc.port", "8082")
 	//监听网络端口
 	listener, err := net.Listen("tcp", ":"+port)
@@ -43,5 +45,5 @@ func (s *GoRPCStarter) Start(ctx infra.StarterContext) {
 	}
 	log.Info("tcp port listened for rpc:", port)
 	//处理网络连接和请求
-	go s.server.Accept(listener)
+	go s.server.Serve(listener)
 }

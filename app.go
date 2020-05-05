@@ -1,6 +1,7 @@
 package one
 
 import (
+	"one/apis/rpc"
 	_ "one/apis/web"
 	"one/infra"
 	"one/infra/base"
@@ -17,8 +18,8 @@ func init() {
 	infra.Register(&migrate.MigrateStarter{})
 	infra.Register(&base_c.RedisStarter{})
 	infra.Register(&base.ValidatorStarter{})
-	//infra.Register(&base.GoRPCStarter{})
-	//infra.Register(&gorpc.GoRpcApiStarter{})
+	infra.Register(&base.GoRPCStarter{})
+	infra.Register(&rpc.GoRpcApiStarter{})
 	//infra.Register(&jobs.RefundExpiredJobStarter{})
 	infra.Register(&base.GinStarter{})
 	infra.Register(&infra.WebApiStarter{})

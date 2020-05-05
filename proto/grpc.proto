@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+option go_package = ".;protos";
+
+package protos;
+
+message OrderReq{
+    int32 address = 1;
+    string extra = 2;
+    message orderItem{
+        int32 id = 1;
+        int32 productId = 2;
+        int32 productSkuId = 3;
+        int32 amount = 4;
+    }
+    repeated orderItem item = 3;
+}
+
+message OkMsg{
+    string status = 1;
+}
+
+message OrderUpdate{
+    int32 id = 1;
+    string paymentMethod = 2;
+    string paymentNo = 3;
+}
+
+message Order{
+    int32 id = 1;
+}
+
+message OrderInfo{
+    string status = 1;
+    float total = 2;
+    string address = 3;
+    string extra = 4;
+    string no = 5;
+    message itemInfo{
+        string image = 1;
+        string title = 2;
+        string des = 3;
+        float price = 4;
+        int32 amount = 5;
+        float subTotal = 6;
+    }
+    repeated itemInfo item = 6;
+}
+
+// 定义服务，关键字'service'，方法关键字'rpc'
+service IOrderService {
+    rpc CreateOrder (OrderReq) returns (OkMsg);
+    rpc UpdateOrder (OrderUpdate) returns (OkMsg);
+    rpc DeleteOrder (Order) returns (OkMsg);
+    rpc OrderDetail (Order) returns (OrderInfo);
+//    // 单一请求应答，一对一
+//    rpc Get (UserReq) returns (User);
+//    // 服务端流式应答，一对多，可用于下载
+//    rpc GetList (UserReq) returns (stream User);
+//    // 客户端流式请求，多对一，可用于上传
+//    rpc WaitGet(stream UserReq) returns (User);
+//    // 双向流式请求应答，支持HTTP/2.0
+//    rpc LoopGet(stream UserReq) returns (stream User);
+}
